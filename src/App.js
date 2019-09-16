@@ -7,9 +7,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       data: [],
-      citySearch: ''
+      city: '',
+      gender:''
     }
     this.handleChange = this.handleChange.bind(this);
+
   }
   fetchDirectory() {
     getApi()
@@ -24,31 +26,41 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    const citySearch = event.currentTarget.value;
-    console.log(citySearch);
+    const value = event.currentTarget.value;
+    const name = event.currentTarget.name;
+    console.log(name);
     this.setState({
-      citySearch: citySearch,
+      [name]: value,
     })
   }
 
+  handleSelect(event) {
+    const gender = event.currentTarget.value;
+    this.setState({
+      gender: gender,
+    })
+  }
 
   render() {
     return (
       <div className="App">
         <label htmlFor="city">busca un profesional en tu ciudad</label>
-        <input id="city"
+        <input 
+          id="city"
+          name="city"
           placeholder="ciudad"
           value={this.state.citySearch}
           type="text"
           onChange={this.handleChange}></input>
         <label htmlFor="size">Filtra por género:</label>
-        <select id="gender" name="gender">
-          <option value="femenino">femenino</option>
-          <option value="masculino">masculino</option>
+        <select id="gender" name="gender" onChange={this.handleChange}>
+          <option value="all-gender">all gender</option>
+          <option value="femenino">female</option>
+          <option value="masculino">male</option>
         </select>
         <ul className="App__list">
           {this.state.data
-            .filter(user => user.location.city.includes(this.state.citySearch))
+            .filter(user => user.location.city.includes(this.state.city))
             .map(
               (user, index) => <li className="App__user" key={index}>
                 <div className="User__container">
