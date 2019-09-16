@@ -71,7 +71,7 @@ class App extends React.Component {
           type="text"
           onChange={this.handleChange}></input>
         <label htmlFor="size">Filtra por género:</label>
-        <select id="gender" name="gender" onChange={this.handleSelect}>
+        <select id="gender" name="gender" onChange={this.handleChange}>
           <option value="">all gender</option>
           <option value="female">female</option>
           <option value="male">male</option>
