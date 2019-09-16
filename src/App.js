@@ -9,8 +9,9 @@ class App extends React.Component {
       data: [],
       city: '',
       gender: '',
-      male: true,
-      female: true
+      number:0
+      // male: true,
+      // female: true
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -38,26 +39,16 @@ class App extends React.Component {
   }
 
   handleSelect(event) {
-    const gender = event.currentTarget.value;
-    if (gender === 'male') {
-      this.setState({
-        male: true,
-        female: false
-      })
-    } else if (gender === 'female') {
-      this.setState({
-        male: false,
-        female: true
-      })
-
-    } else {
-      this.setState({
-        male: true,
-        female: true
-      })
-    }
-
+    const value = event.currentTarget.value;
+    const name = event.currentTarget.name;
+    const number = event.currentTarget.value.length;
+    console.log(name);
+    this.setState({
+      [name]: value,
+      number: number
+    })
   }
+
 
   render() {
     return (
@@ -71,7 +62,7 @@ class App extends React.Component {
           type="text"
           onChange={this.handleChange}></input>
         <label htmlFor="size">Filtra por género:</label>
-        <select id="gender" name="gender" onChange={this.handleChange}>
+        <select id="gender" name="gender" onChange={this.handleSelect}>
           <option value="">all gender</option>
           <option value="female">female</option>
           <option value="male">male</option>
@@ -79,7 +70,7 @@ class App extends React.Component {
         <ul className="App__list">
           {this.state.data
             .filter(user => user.location.city.includes(this.state.city))
-            .filter(user => user.gender.includes(this.state.gender))
+            .filter(user => (this.state.number===0) || (user.gender.length===this.state.number))
             .map((user, index) => <li className="App__user" key={index}>
                   <div className="User__container">
                     <h2 className="User__name">{user.name.title} {user.name.first} {user.name.last}</h2>
