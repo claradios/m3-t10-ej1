@@ -27,12 +27,12 @@ class App extends React.Component {
           {this.state.data.map(
             user => <li className="App__user">
               <div className="User__container">
-                <h2 className="User__name">{user.name.first} {user.name.last}</h2>
+                <h2 className="User__name">{user.name.title} {user.name.first} {user.name.last}</h2>
                 <div className="Img__container">
-                  <img src={user.picture.medium} className="img"/>
+                  <img src={user.picture.medium} alt={`${user.name.first} ${user.name.last}`} className="img"/>
                 </div>
-                <p className="User__city"></p>
-                <p className="User__age"></p>
+                <p className="User__city">{user.location.city}</p>
+                <p className="User__age">{user.dob.age}</p>
               </div>
             </li>
           )}
