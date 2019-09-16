@@ -8,9 +8,12 @@ class App extends React.Component {
     this.state = {
       data: [],
       city: '',
-      gender:''
+      gender: '',
+      male: true,
+      female: true
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
 
   }
   fetchDirectory() {
@@ -36,16 +39,31 @@ class App extends React.Component {
 
   handleSelect(event) {
     const gender = event.currentTarget.value;
-    this.setState({
-      gender: gender,
-    })
+    if (gender === 'male') {
+      this.setState({
+        male: true,
+        female: false
+      })
+    } else if (gender === 'female') {
+      this.setState({
+        male: false,
+        female: true
+      })
+
+    } else {
+      this.setState({
+        male: true,
+        female: true
+      })
+    }
+
   }
 
   render() {
     return (
       <div className="App">
         <label htmlFor="city">busca un profesional en tu ciudad</label>
-        <input 
+        <input
           id="city"
           name="city"
           placeholder="ciudad"
@@ -53,26 +71,26 @@ class App extends React.Component {
           type="text"
           onChange={this.handleChange}></input>
         <label htmlFor="size">Filtra por género:</label>
-        <select id="gender" name="gender" onChange={this.handleChange}>
-          <option value="all-gender">all gender</option>
-          <option value="femenino">female</option>
-          <option value="masculino">male</option>
+        <select id="gender" name="gender" onChange={this.handleSelect}>
+          <option value="">all gender</option>
+          <option value="female">female</option>
+          <option value="male">male</option>
         </select>
         <ul className="App__list">
           {this.state.data
             .filter(user => user.location.city.includes(this.state.city))
-            .map(
-              (user, index) => <li className="App__user" key={index}>
-                <div className="User__container">
-                  <h2 className="User__name">{user.name.title} {user.name.first} {user.name.last}</h2>
-                  <div className="Img__container">
-                    <img src={user.picture.medium} alt={`${user.name.first} ${user.name.last}`} className="img" />
+            .filter(user => user.gender.includes(this.state.gender))
+            .map((user, index) => <li className="App__user" key={index}>
+                  <div className="User__container">
+                    <h2 className="User__name">{user.name.title} {user.name.first} {user.name.last}</h2>
+                    <div className="Img__container">
+                      <img src={user.picture.medium} alt={`${user.name.first} ${user.name.last}`} className="img" />
+                    </div>
+                    <p className="User__city">{user.location.city}</p>
+                    <p className="User__age">{user.dob.age}</p>
                   </div>
-                  <p className="User__city">{user.location.city}</p>
-                  <p className="User__age">{user.dob.age}</p>
-                </div>
-              </li>
-            )}
+                </li>
+              )}
         </ul>
       </div>
     );
